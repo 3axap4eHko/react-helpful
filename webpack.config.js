@@ -7,7 +7,7 @@ module.exports = {
     browserNoActivityTimeout: 30000,
     module: {
         preLoaders: [
-            { test: /\.jsx?$/, loader: 'eslint-loader', exclude: /node_modules/ }
+            { test: /\.jsx?$/, loader: 'eslint-loader', exclude: /node_modules|spec/ }
         ],
         loaders: [
             {test: /\.jsx?$/, loader: 'babel', exclude: /node_modules/}

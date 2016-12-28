@@ -2,10 +2,9 @@
 
 import React, {Component, PropTypes} from 'react';
 import Empty from './Empty';
-import {isComponent} from './utils'
+import {isComponent} from './utils';
 
 const {func, any, object, string} = PropTypes;
-const defaultComment = 'falsy render condition';
 
 class If extends Component {
     static propTypes = {
@@ -18,8 +17,7 @@ class If extends Component {
         comment: string
     };
     static defaultProps = {
-        props: {},
-        comment: defaultComment
+        props: {}
     };
 
     render() {
@@ -27,13 +25,15 @@ class If extends Component {
         const Component = is ? render : elseRender;
 
         if (isComponent(Component)) {
-            return <Component {...props} />
+            return <Component {...props} />;
         }
         if (typeof Component === 'function') {
             return Component(props);
         }
-
-        return <Empty comment={comment}/>;
+        if (typeof comment === 'string') {
+            return <Empty comment={comment}/>;
+        }
+        return null;
     }
 }
 

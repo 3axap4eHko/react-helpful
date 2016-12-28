@@ -41,14 +41,22 @@ describe('If test suite', () => {
         expect(node.tagName).toEqual(TAG_NAME_DIV);
         expect(node.innerText).toEqual(testText);
     });
-    it('If is falsy and no elseRender defined should rendered default empty component', () => {
+    it('If is falsy and no elseRender defined should render default comment', () => {
+        const root = document.createElement('div');
+        document.body.appendChild(root);
+        const component = ReactDOM.render(<If is={false} render={ () => <div/> } comment="comment"/>, root);
+        expect(isCompositeComponent(component)).toBeTruthy();
+        const node = ReactDOM.findDOMNode(component);
+        expect(node instanceof HTMLElement).toBeTruthy();
+        expect(node.tagName).toEqual(TAG_NAME_SCRIPT);
+    });
+    it('If is falsy and no elseRender defined nothing should render', () => {
         const root = document.createElement('div');
         document.body.appendChild(root);
         const component = ReactDOM.render(<If is={false} render={ () => <div/> }/>, root);
         expect(isCompositeComponent(component)).toBeTruthy();
         const node = ReactDOM.findDOMNode(component);
-        expect(node instanceof HTMLElement).toBeTruthy();
-        expect(node.tagName).toEqual(TAG_NAME_SCRIPT);
+        expect(node).toEqual(null);
     });
     it('If is falsy and elseRender defined should rendered elseRender prop', () => {
         const root = document.createElement('div');

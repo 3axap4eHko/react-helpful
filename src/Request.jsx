@@ -59,7 +59,7 @@ class Request extends Component {
             onError: reject
         };
         const xhr = request(options);
-        this.setState({xhr})
+        this.setState({xhr});
     };
 
     onCancel = () => {

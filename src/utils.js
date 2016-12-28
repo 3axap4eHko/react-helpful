@@ -17,7 +17,7 @@ const defaultXHROptions = {
 const componentNameExpr = /^[A-Z]/;
 
 export function isComponent(value) {
-    return typeof value === 'function' && componentNameExpr.test(value.name)
+    return typeof value === 'function' && componentNameExpr.test(value.name);
 }
 
 export function buildQuery(data = {}) {
@@ -50,7 +50,7 @@ export function request(options) {
         if (isSuccess) {
             options.onSuccess(xhr);
         } else {
-            options.onError(xhr)
+            options.onError(xhr);
         }
     } );
     xhr.addEventListener( 'error', () => options.onError(xhr) );

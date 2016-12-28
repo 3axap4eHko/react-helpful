@@ -83,6 +83,7 @@ describe('Switch test suite', () => {
         const component = ReactDOM.render(
             <Switch value="yetAnotherTest"
                     cases={cases}
+                    comment="comment"
             />,
             root
         );
@@ -90,6 +91,20 @@ describe('Switch test suite', () => {
         const node = ReactDOM.findDOMNode(component);
         expect(node instanceof HTMLElement).toBeTruthy();
         expect(node.tagName).toEqual(TAG_NAME_SCRIPT);
+    });
+
+    it('should nothing render if no comment and value is not case', () => {
+        const root = document.createElement('div');
+        document.body.appendChild(root);
+        const component = ReactDOM.render(
+            <Switch value="yetAnotherTest"
+                    cases={cases}
+            />,
+            root
+        );
+        expect(isCompositeComponent(component)).toBeTruthy();
+        const node = ReactDOM.findDOMNode(component);
+        expect(node).toEqual(null);
     });
 
 

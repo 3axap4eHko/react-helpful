@@ -2,10 +2,9 @@
 
 import React, {Component, PropTypes} from 'react';
 import Empty from './Empty';
-import {isComponent} from './utils'
+import {isComponent} from './utils';
 
 const {any, func, string, object, objectOf} = PropTypes;
-const defaultComment = 'default render condition';
 
 class Switch extends Component {
     static propTypes = {
@@ -16,8 +15,7 @@ class Switch extends Component {
         comment: string
     };
     static defaultProps = {
-        props: {},
-        comment: defaultComment
+        props: {}
     };
 
     render() {
@@ -25,12 +23,15 @@ class Switch extends Component {
         const Component = value in cases ? cases[value] : def;
 
         if (isComponent(Component)) {
-            return <Component {...props} />
+            return <Component {...props} />;
         }
         if (typeof Component === 'function') {
             return Component(props);
         }
-        return <Empty comment={comment}/>;
+        if (typeof comment === 'string') {
+            return <Empty comment={comment}/>;
+        }
+        return null;
     }
 }
 

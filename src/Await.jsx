@@ -5,7 +5,7 @@ import If from './If';
 import {PromiseCancelable} from './utils';
 
 const {func, string} = PropTypes;
-const _Cancel = Symbol('cancel');
+const _cancel = Symbol('cancel');
 
 function getPromiseCancelable(onStart, onSuccess, onError) {
     const result = PromiseCancelable((resolve, reject) => onStart(resolve, reject));
@@ -30,11 +30,11 @@ class Await extends Component {
 
     componentWillMount() {
         const {cancel} = getPromiseCancelable(this.onStart, this.onSuccess, this.onError);
-        this[_Cancel] = cancel;
+        this[_cancel] = cancel;
     }
 
     componentWillUnmount() {
-        this[_Cancel]();
+        this[_cancel]();
     }
 
     onStart = (resolve, reject) => {
