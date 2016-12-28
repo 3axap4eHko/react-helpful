@@ -14,7 +14,7 @@
  - [Request](#Request)
 
 ### <a name="Empty"></a> Empty
-Render not drawable <script> tag component with multiline comments
+Render not drawable `script` tag component with multiline comments
 ``` javascript
 <Empty comment="empty component comment"/>
 ```
@@ -33,7 +33,7 @@ Problem is using ternary operator make code ugly and unreadable.
 Those components provide possibility render conditional parts in react style
 
 ### <a name="If"></a> If
-Conditional renderer <If> component
+Conditional renderer `If` component
 
 ``` javascript
 <If is={condition}
@@ -45,7 +45,7 @@ Conditional renderer <If> component
 ```
 
 ### <a name="Switch"></a> Switch
-Case renderer
+Conditional renderer `Switch` component
 ``` javascript
 <Switch value={value}
     props={myProps}
