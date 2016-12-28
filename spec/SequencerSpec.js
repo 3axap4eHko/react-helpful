@@ -1,7 +1,5 @@
 'use strict';
 
-import React from 'react';
-import ReactDOM from 'react-dom';
 import Sequencer from '../src/Sequencer';
 
 const DELAY = 50;
@@ -18,10 +16,8 @@ function longActionFactory() {
 describe('Sequencer test suite', () => {
 
     it('Sequencer should call actions one by one', done => {
-        const root = document.createElement('div');
-        document.body.appendChild(root);
         const actions = Array.from({length: 5}).map(actionFactory);
-        ReactDOM.render(<Sequencer
+        render(<Sequencer
             actions={actions}
             renderComplete={() => <div>Complete</div>}
             renderPending={() => <div>Pending</div>}
@@ -29,24 +25,22 @@ describe('Sequencer test suite', () => {
                 const time = Date.now();
                 const diff = values.map( (value, idx) => ((values[idx+1] || time) - value) > DELAY/2);
                 expect(diff.every(value => value)).toBeTruthy();
-                done()
+                done();
             }}
-        />, root);
+        />);
     });
 
     it('Sequencer should interrupt call actions on cancel', done => {
-        const root = document.createElement('div');
-        document.body.appendChild(root);
         const actions = Array.from({length: 5}).map(longActionFactory);
-        ReactDOM.render(<Sequencer
+        render(<Sequencer
             actions={actions}
             renderComplete={() => <div>Complete</div>}
             renderPending={() => <div>Pending</div>}
             onCancel={ () => done() }
             onSuccess={ () => expect(true).toBeFalsy()}
             onError={ () => expect(true).toBeFalsy()}
-        />, root, () => {
-            ReactDOM.unmountComponentAtNode(root);
+        />, rootNode => {
+            unmountComponentAtNode(rootNode);
         });
     });
 });

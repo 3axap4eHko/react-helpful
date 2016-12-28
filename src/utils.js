@@ -7,11 +7,11 @@ const defaultXHROptions = {
     headers: {},
     charset: 'utf-8',
     responseType: '',
-    onStart: () => {},
-    onProgress: () => {},
-    onSuccess: () => {},
-    onError: () => {},
-    onCancel: () => {}
+    onStart() {},
+    onProgress() {},
+    onSuccess() {},
+    onError() {},
+    onCancel() {}
 };
 
 const componentNameExpr = /^[A-Z]/;

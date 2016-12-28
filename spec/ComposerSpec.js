@@ -1,8 +1,5 @@
 'use strict';
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {} from 'react-addons-test-utils';
 import Composer from '../src/Composer';
 
 const DELAY = 50;
@@ -19,10 +16,8 @@ function longActionFactory() {
 describe('Composer test suite', () => {
 
     it('Composer should call actions at the same time', done => {
-        const root = document.createElement('div');
-        document.body.appendChild(root);
         const actions = Array.from({length: 5}).map(actionFactory);
-        ReactDOM.render(<Composer
+        render(<Composer
             actions={actions}
             renderComplete={() => <div>Complete</div>}
             renderPending={() => <div>Pending</div>}
@@ -32,21 +27,19 @@ describe('Composer test suite', () => {
                 expect(diff.every( value => value)).toBeTruthy();
                 done()
             }}
-        />, root);
+        />);
     });
     it('Composer should interrupt call actions on cancel', done => {
-        const root = document.createElement('div');
-        document.body.appendChild(root);
         const actions = Array.from({length: 5}).map(longActionFactory);
-        ReactDOM.render(<Composer
+        render(<Composer
             actions={actions}
             renderComplete={() => <div>Complete</div>}
             renderPending={() => <div>Pending</div>}
             onCancel={ () => done() }
             onSuccess={ () => expect(true).toBeFalsy()}
             onError={ () => expect(true).toBeFalsy()}
-        />, root, () => {
-            ReactDOM.unmountComponentAtNode(root);
+        />, rootNode => {
+            unmountComponentAtNode(rootNode);
         });
     });
 });

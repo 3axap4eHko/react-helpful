@@ -4,10 +4,14 @@ import React, {Component, PropTypes} from 'react';
 import Await from './Await';
 import {request} from './utils';
 
-const {string, object, func, bool} = PropTypes;
+const {any, string, object, func, bool} = PropTypes;
+
+const _xhr = Symbol('xhr');
 
 class Request extends Component {
     static propTypes = {
+        id: any,
+
         url: string.isRequired,
         method: string,
         headers: object,
@@ -31,19 +35,14 @@ class Request extends Component {
         headers: {},
         data: null,
         withCredentials: true,
-        onStart(){
-        },
-        onProgress(){
-        },
-        onSuccess(){
-        },
-        onError(){
-        },
-        onCancel(){
-        }
+        onStart() {},
+        onProgress() {},
+        onSuccess() {},
+        onError() {},
+        onCancel() {}
     };
 
-    onStart = (resolve, reject) => {
+    onStart = (onSuccess, onError, id) => {
         const {url, method, query = {}, data = null, headers = {}, username, password, onStart, onProgress} = this.props;
         const options = {
             url,
@@ -53,29 +52,37 @@ class Request extends Component {
             headers,
             username,
             password,
-            onStart,
-            onProgress,
-            onSuccess: resolve,
-            onError: reject
-        };
-        const xhr = request(options);
-        this.setState({xhr});
-    };
 
+            onStart(xhr) {
+                onStart(xhr, id);
+            },
+            onProgress(xhr) {
+                onProgress(xhr, id);
+            },
+            onSuccess,
+            onError
+        };
+        this[_xhr] = request(options);
+    };
+    onError = (error) => {
+        this.props.onError(error, this[_xhr], this.props.id);
+    };
     onCancel = () => {
-        if (this.state.xhr !== XMLHttpRequest.DONE) {
-            this.state.xhr.abort();
+        if (this[_xhr] !== XMLHttpRequest.DONE) {
+            this[_xhr].abort();
         }
+        this.props.onCancel(this[_xhr], this.props.id);
     };
 
     render() {
-        const {renderComplete, renderPending, onSuccess, onError} = this.props;
+        const {id, renderComplete, renderPending, onSuccess} = this.props;
         return <Await
+            id={id}
             renderComplete={renderComplete}
             renderPending={renderPending}
             onStart={this.onStart}
             onSuccess={onSuccess}
-            onError={onError}
+            onError={this.onError}
             onCancel={this.onCancel}
         />;
     }

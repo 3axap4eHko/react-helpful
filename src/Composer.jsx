@@ -3,10 +3,12 @@
 import React, {Component, PropTypes} from 'react';
 import Await from './Await';
 
-const {func, arrayOf} = PropTypes;
+const {func, arrayOf, any} = PropTypes;
 
 class Composer extends Component {
     static propTypes = {
+        id: any,
+
         actions: arrayOf(func).isRequired,
 
         renderComplete: func.isRequired,
@@ -17,10 +19,10 @@ class Composer extends Component {
         onError: func,
         onCancel: func,
     };
-    onStart = (resolve, reject) => {
+    onStart = (resolve, reject, id) => {
         const {actions, onStart} = this.props;
         if (onStart) {
-            onStart(resolve, reject);
+            onStart(resolve, reject, id);
         }
         Promise
             .all(actions.map(action => action()))
@@ -28,8 +30,9 @@ class Composer extends Component {
             .catch(reject);
     };
     render() {
-        const {renderComplete, renderPending, onSuccess, onError, onCancel} = this.props;
+        const {id, renderComplete, renderPending, onSuccess, onError, onCancel} = this.props;
         return <Await
+            id={id}
             renderComplete={renderComplete}
             renderPending={renderPending}
             onStart={this.onStart}

@@ -4,7 +4,7 @@ import React, {Component, PropTypes} from 'react';
 import Await from './Await';
 import {PromiseCancelable} from './utils';
 
-const {func, arrayOf} = PropTypes;
+const {any, func, arrayOf} = PropTypes;
 const _Cancel = Symbol('cancel');
 
 function _sequencer(actions, setCancel, results = []) {
@@ -19,6 +19,8 @@ function _sequencer(actions, setCancel, results = []) {
 
 class Sequencer extends Component {
     static propTypes = {
+        id: any,
+
         actions: arrayOf(func).isRequired,
 
         renderComplete: func.isRequired,
@@ -29,26 +31,27 @@ class Sequencer extends Component {
         onError: func,
         onCancel: func
     };
-    onStart = (resolve, reject) => {
+    onStart = (resolve, reject, id) => {
         const {actions, onStart} = this.props;
         if (onStart) {
-            onStart(resolve, reject);
+            onStart(resolve, reject, id);
         }
         _sequencer(actions, cancel => this[_Cancel] = cancel)
             .then(resolve)
             .catch(reject);
     };
-    onCancel = (error) => {
-        this[_Cancel](error);
+    onCancel = (error, id) => {
+        this[_Cancel](error, id);
         const {onCancel} = this.props;
         if (onCancel) {
-            onCancel(error);
+            onCancel(error, id);
         }
     };
 
     render() {
-        const {renderComplete, renderPending, onSuccess, onError} = this.props;
+        const {id, renderComplete, renderPending, onSuccess, onError} = this.props;
         return <Await
+            id={id}
             renderComplete={renderComplete}
             renderPending={renderPending}
             onStart={this.onStart}

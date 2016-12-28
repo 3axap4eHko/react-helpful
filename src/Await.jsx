@@ -4,7 +4,7 @@ import React, {Component, PropTypes} from 'react';
 import If from './If';
 import {PromiseCancelable} from './utils';
 
-const {func, string} = PropTypes;
+const {any, func, string} = PropTypes;
 const _cancel = Symbol('cancel');
 
 function getPromiseCancelable(onStart, onSuccess, onError) {
@@ -17,6 +17,8 @@ function getPromiseCancelable(onStart, onSuccess, onError) {
 
 class Await extends Component {
     static propTypes = {
+        id: any,
+
         renderComplete: func.isRequired,
         renderPending: func.isRequired,
 
@@ -34,43 +36,43 @@ class Await extends Component {
     }
 
     componentWillUnmount() {
-        this[_cancel]();
+        this[_cancel](null, this.props.id);
     }
 
     onStart = (resolve, reject) => {
         this.setState({done: false});
-        const {onStart} = this.props;
+        const {id, onStart} = this.props;
         if (onStart) {
-            onStart(resolve, reject);
+            onStart(resolve, reject, id);
         }
     };
     onSuccess = (value) => {
         this.setState({value, done: true});
-        const {onSuccess} = this.props;
+        const {id, onSuccess} = this.props;
         if (onSuccess) {
-            onSuccess(value);
+            onSuccess(value, id);
         }
     };
     onError = (error) => {
         if (!error || !error.isCanceled) {
             this.setState({error, done: true});
-            const {onError} = this.props;
+            const {id, onError} = this.props;
             if (onError) {
-                onError(error);
+                onError(error, id);
             }
         } else {
-            const {onCancel} = this.props;
+            const {id, onCancel} = this.props;
             if (onCancel) {
-                onCancel(error);
+                onCancel(error, id);
             }
         }
     };
 
     render() {
         const {done, value, error} = this.state;
-        const {renderComplete, renderPending, comment} = this.props;
+        const {renderComplete, renderPending, comment, id} = this.props;
         return <If is={done}
-                   props={{error, value}}
+                   props={{error, value, id}}
                    render={renderComplete}
                    elseRender={renderPending}
                    comment={comment}

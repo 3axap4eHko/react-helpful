@@ -14,11 +14,11 @@
  - [Request](#Request)
 
 ### <a name="Empty"></a> Empty
-Empty script component with comments
+Render not drawable <script> tag component with multiline comments
 ``` javascript
 <Empty comment="empty component comment"/>
 ```
-rendered as
+like here
 ``` html
 <script>
 /**
@@ -27,12 +27,29 @@ rendered as
 </script>
 ```
 
+## Conditional Rendering
+
+Problem is using ternary operator make code ugly and unreadable.
+Those components provide possibility render conditional parts in react style
+
 ### <a name="If"></a> If
-Case component rendering with arguments and comment by render callback
+Conditional renderer <If> component
+
+``` javascript
+<If is={condition}
+    props={myProps}
+    render={ (passedMyProps) => <Component {...passedMyProps} /> }
+    elseRender={AnotherComponent}
+    comment="if condition"
+/>
+```
+
+### <a name="Switch"></a> Switch
+Case renderer
 ``` javascript
 <Switch value={value}
     props={myProps}
-    case={{
+    cases={{
         value1: MyComponent,
         value2(props) {
             return <MyAnotherComponent {...props} />
@@ -43,71 +60,41 @@ Case component rendering with arguments and comment by render callback
 />
 ```
 
-### <a name="Switch"></a> Switch
-Condition component rendering with arguments and comment by render callback
-``` javascript
-<If is={condition}
-    props={myProps}
-    render={ (myProps) => <Component prop={myProps} /> }
-    elseRender={ (myProps) => <AnotherComponent prop={myProps} /> }
-    comment="if condition"
-/>
-```
-or just a Component
-``` javascript
-<If is={condition}
-    props={myProps}
-    render={Component}
-    elseRender={AnotherComponent}
-    comment="if condition"
-/>
-```
 
 ### <a name="EventListener"></a> EventListener
-Capturing event globally
-``` javascript
-<EventListener
-    event="click"
-    on={this.onClick}
-/>
-```
-or by selector
+
+DOM event listener
+
 ``` javascript
 <ElementEventListener
-    target="#target"
     event="click"
-    on={this.onClick}
+    target="#target"
+    excludeParents={['.close', '.exit']}
+    on={ event => {} }
+    noPrevent={false}
+    capture={false}
+    once={false}
+    passive={false}
 />
 ```
 
 ### <a name="Await"></a> Await
-Await promise complete, if component will be unmounted it trigger onCancel
+Await promise completion, if component will be unmounted it trigger onCancel
 ``` javascript
 onStart(resolve, reject) {
     setTimeout(resolve, 1000, 'some data');
 }
 // ...
 <Await
-    renderComplete={({error, value}) => <div>Complete</div>}
-    renderPending={() => <div>Pending</div>}
-    onStart={ this.onStart }
-    onSuccess={ this.onSuccess }
-    onError={ this.onError }
-    onCancel={ this.onCancel }
-/>
-```
+    id="any_optional_identifier_of_async_operation"
 
-### <a name="Sequencer"></a> Sequencer
-Sequenced promised functions execution
-``` javascript
-<Sequencer
-    actions={[configLoadAction, configDependedDataLoad]}
-    renderComplete={({error, values}) => <div>Complete</div>}
+    renderComplete={({error, value, id}) => <div>Complete</div>}
     renderPending={() => <div>Pending</div>}
-    onStart={ this.onStart }
-    onSuccess={ this.onSuccess }
-    onError={ this.onError }
-    onCancel={ this.onCancel }
+
+    onStart={ (resolve, reject, id) => {} }
+    onSuccess={ (value, id) => {} }
+    onError={ (error, id) => {} }
+    onCancel={ (error, id) => {} }
 />
 ```
 
@@ -115,20 +102,45 @@ Sequenced promised functions execution
 Parallel promised functions execution
 ``` javascript
 <Composer
+    id="any_optional_identifier_of_async_operation"
+
     actions={[friendsLoadAction, messagesLoadAction]}
+
     renderComplete={({error, values}) => <div>Complete</div>}
-    renderPending={() => <div>Pending</div>}
-    onStart={ this.onStart }
-    onSuccess={ this.onSuccess }
-    onError={ this.onError }
-    onCancel={ this.onCancel }
+    renderPending={LoadingProgress}
+
+    onStart={ (resolve, reject, id) => {} }
+    onSuccess={ (value, id) => {} }
+    onError={ (error, id) => {} }
+    onCancel={ (error, id) => {} }
 />
 ```
+
+### <a name="Sequencer"></a> Sequencer
+Sequenced promised functions execution
+``` javascript
+<Sequencer
+    id="any_optional_identifier_of_async_operation"
+
+    actions={[configLoadAction, configDependedDataLoad]}
+
+    renderComplete={({error, values}) => <div>Complete</div>}
+    renderPending={LoadingProgress}
+
+    onStart={ (resolve, reject, id) => {} }
+    onSuccess={ (value, id) => {} }
+    onError={ (error, id) => {} }
+    onCancel={ (error, id) => {} }
+/>
+```
+
 
 ### <a name="Request"></a> Request
 Request rendering component
 ``` javascript
 <Request
+    id="any_optional_identifier_of_async_operation"
+
     url={requestUrl}
     query={queryObject}
     method="POST"
@@ -138,14 +150,14 @@ Request rendering component
     username={username}
     password={password}
 
-    onStart={this.onStart}
-    onProgress={this.onProgress}
-    onSuccess={this.onSuccess}
-    onError={this.onError}
-    onCancel={this.onCancel}
+    onStart={ (xhr, id) => {} }
+    onProgress={ (xhr, id) => {} }
+    onSuccess={ (xhr, id) => {} }
+    onError={ (error, xhr, id) => {} }
+    onCancel={ (xhr, id) => {} }
 
-    renderComplete={this.renderOnComplete}
-    renderPending={this.renderOnPending}
+    renderComplete={DisplayResultComponent}
+    renderPending={LoadingScreen}
 />
 ```
 

@@ -14,21 +14,28 @@ module.exports = function(config) {
     customLaunchers: {
       ChromeLauncher: {
         base: 'Chrome',
-        flags: ['--start-maximized', `--user-data-dir=${tempDir}`]
+        flags: ['--start-maximized', '--incognito', `--user-data-dir=${tempDir}`]
       },
       ChromeLauncherTravis: {
         base: 'Chrome',
-        flags: ['--no-sandbox', '--start-maximized', `--user-data-dir=${tempDir}`]
+        flags: ['--no-sandbox', '--incognito', '--start-maximized', `--user-data-dir=${tempDir}`]
       },
     },
     frameworks: ['jasmine'],
     files: [
-      { pattern: './spec/**/*.js', watched: false },
-      { pattern: './spec/**/*.json', watched: false, included: false, served: true },
+        { pattern: './spec/_bootstrap.js', watched: false },
+        { pattern: './spec/**/*.json', watched: false, included: false, served: true },
     ],
     preprocessors: {
-      './spec/**/*.js': ['webpack']
+        './spec/_bootstrap.js': ['webpack']
     },
+    // files: [
+    //   { pattern: './spec/**/*.js', watched: false },
+    //   { pattern: './spec/**/*.json', watched: false, included: false, served: true },
+    // ],
+    // preprocessors: {
+    //   './spec/**/*.js': ['webpack']
+    // },
     webpack: webpackConfig,
     webpackMiddleware: {
       noInfo: true
