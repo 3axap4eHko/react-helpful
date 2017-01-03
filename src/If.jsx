@@ -30,7 +30,10 @@ class If extends Component {
         if (typeof Component === 'function') {
             return Component(props);
         }
-        return <Empty comment={comment}/>;
+        if (typeof comment === 'string') {
+            return <Empty comment={comment}/>;
+        }
+        return null;
     }
 }
 
