@@ -28,10 +28,7 @@ class Switch extends Component {
         if (typeof Component === 'function') {
             return Component(props);
         }
-        if (typeof comment === 'string') {
-            return <Empty comment={comment}/>;
-        }
-        return null;
+        return <Empty comment={comment}/>;
     }
 }
 
