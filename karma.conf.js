@@ -1,24 +1,23 @@
-
 const Os = require('os');
 const Path = require('path');
 
 const webpackConfig = require('./webpack.config');
-const tempDir = Path.join(Os.tmpdir(), `chrome-test`) ;
+const tempDir = Path.join(Os.tmpdir(), 'chrome-test');
 const isTravis = !!process.env.TRAVIS;
 const singleRun = isTravis;
 const autoWatch = !isTravis;
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
     browsers: [isTravis ? 'ChromeLauncherTravis' : 'ChromeLauncher'],
     customLaunchers: {
       ChromeLauncher: {
         base: 'Chrome',
-        flags: ['--start-maximized', '--incognito', `--user-data-dir=${tempDir}`]
+        flags: ['--start-maximized', '--incognito', `--user-data-dir=${tempDir}`],
       },
       ChromeLauncherTravis: {
         base: 'Chrome',
-        flags: ['--no-sandbox', '--incognito', '--start-maximized', `--user-data-dir=${tempDir}`]
+        flags: ['--no-sandbox', '--incognito', '--start-maximized', `--user-data-dir=${tempDir}`],
       },
     },
     frameworks: ['jasmine'],
@@ -27,7 +26,7 @@ module.exports = function(config) {
         { pattern: './spec/**/*.json', watched: false, included: false, served: true },
     ],
     preprocessors: {
-        './spec/_bootstrap.js': ['webpack']
+      './spec/_bootstrap.js': ['webpack'],
     },
     // files: [
     //   { pattern: './spec/**/*.js', watched: false },
@@ -38,12 +37,12 @@ module.exports = function(config) {
     // },
     webpack: webpackConfig,
     webpackMiddleware: {
-      noInfo: true
+      noInfo: true,
     },
     plugins: [
       'karma-chrome-launcher',
       'karma-webpack',
-      'karma-jasmine'
+      'karma-jasmine',
     ],
     reporters: ['progress'],
     colors: true,
@@ -52,6 +51,6 @@ module.exports = function(config) {
     autoWatch,
     singleRun,
     concurrency: Infinity,
-    retryLimit: 5
-  })
+    retryLimit: 5,
+  });
 };

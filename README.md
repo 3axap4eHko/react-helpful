@@ -163,4 +163,4 @@ Request rendering component
 
 ## License
 [The MIT License](http://opensource.org/licenses/MIT)
-Copyright (c) 2016-present Ivan Zakharchenko
+Copyright (c) 2016-2017 Ivan Zakharchenko
