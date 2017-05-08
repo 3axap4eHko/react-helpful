@@ -1,27 +1,19 @@
-
-
 import Switch from '../src/Switch';
+
+import TestComponent from './fixtures/TestComponent';
 
 const TAG_NAME_DIV = 'DIV';
 const TAG_NAME_SCRIPT = 'SCRIPT';
 const testText = 'test text';
 const anotherTestText = 'another test text';
 
-class TestComponent extends React.Component {
-  render() {
-    return <div>{testText}</div>;
-  }
-}
-
-class AnotherTestComponent extends React.Component {
-  render() {
-    return <div>{anotherTestText}</div>;
-  }
-}
-
 const cases = {
-  test: TestComponent,
-  anotherTest: AnotherTestComponent,
+  test: function TestA() {
+    return <TestComponent text={testText} />
+  },
+  anotherTest: function TestB() {
+    return <TestComponent text={anotherTestText} />
+  },
 };
 
 

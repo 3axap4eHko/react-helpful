@@ -1,16 +1,11 @@
 
 
 import If from '../src/If';
+import TestComponent from './fixtures/TestComponent';
 
 const TAG_NAME_DIV = 'DIV';
 const TAG_NAME_SCRIPT = 'SCRIPT';
 const testText = 'test text';
-
-class TestComponent extends React.Component {
-  render() {
-    return <div>{this.props.text}</div>;
-  }
-}
 
 const props = {
   text: testText,

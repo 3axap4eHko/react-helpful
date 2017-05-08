@@ -9,6 +9,7 @@
  - [Switch](#Switch)
  - [EventListener](#EventListener)
  - [Await](#Await)
+ - [AsyncComponent](#AsyncComponent)
  - [Sequencer](#Sequencer)
  - [Composer](#Composer)
  - [Request](#Request)
@@ -95,6 +96,16 @@ onStart(resolve, reject) {
     onSuccess={ (value, id) => {} }
     onError={ (error, id) => {} }
     onCancel={ (error, id) => {} }
+/>
+```
+
+### <a name="AsyncComponent"></a> AsyncComponent
+AsyncComponent loader for webpack code splitting approach
+``` javascript
+
+<AsyncComponent
+    component={() => import('./Component')}
+    loader={Loader}
 />
 ```
 
