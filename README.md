@@ -1,6 +1,8 @@
 # React Helpful
 
-[![build status](https://travis-ci.org/3axap4eHko/react-helpful.svg?branch=master)](https://travis-ci.org/3axap4eHko/react-helpful)
+[![NPM version][npm-image]][npm-url]
+[![Downloads][downloads-image]][npm-url]
+[![Build Status][travis-image]][travis-url]
 
 ## Reference
 
@@ -175,3 +177,11 @@ Request rendering component
 ## License
 [The MIT License](http://opensource.org/licenses/MIT)
 Copyright (c) 2016-2017 Ivan Zakharchenko
+
+
+[downloads-image]: https://img.shields.io/npm/dm/react-helpful.svg
+[npm-url]: https://www.npmjs.com/package/react-helpful
+[npm-image]: https://img.shields.io/npm/v/react-helpful.svg
+
+[travis-url]: https://travis-ci.org/3axap4eHko/react-helpful
+[travis-image]: https://img.shields.io/travis/3axap4eHko/react-helpful/master.svg
