@@ -7,15 +7,16 @@ const GExport = require('gulp-export');
 const Babel = require('gulp-babel');
 const ESLlint = require('gulp-eslint');
 
-Gulp.task('clean', cb => Del([buildDir, `${sourceDir}/index.js`], cb));
+Gulp.task('clean', cb => Del([buildDir], cb));
 
-Gulp.task('export', () => Gulp.src([`${sourceDir}/**/*.js*`, `!${sourceDir}/index.js`])
-        .pipe(GExport({ context: './src', filename: 'index.js' })));
-
-Gulp.task('js-compile', ['clean', 'export'], () => Gulp.src([`${sourceDir}/**/*.js*`])
+Gulp.task('js-compile', ['clean'], () => Gulp.src([`${sourceDir}/**/*.js*`])
         .pipe(ESLlint())
         .pipe(ESLlint.format())
         .pipe(ESLlint.failAfterError())
+        .pipe(GExport({
+          context: './src',
+          filename: 'index.js',
+        }))
         .pipe(Babel())
         .pipe(Gulp.dest(buildDir)));
 
