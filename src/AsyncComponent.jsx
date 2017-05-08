@@ -3,6 +3,8 @@ import { func, shape } from 'prop-types';
 import Await from './Await';
 import Empty from './Empty';
 
+const esModuleFlag = '__esModule';
+
 class AsyncComponent extends Component {
 
   static propTypes = {
@@ -39,7 +41,7 @@ class AsyncComponent extends Component {
         renderComplete={({ value: LoadedComponent }) => <LoadedComponent {...props} />}
         renderPending={() => <Loader />}
         onStart={(resolve, reject) => promise.then(
-          component => resolve(component.__esModule ? component.default : component), reject)}
+          component => resolve(component[esModuleFlag] ? component.default : component), reject)}
         onSuccess={onSuccess}
         onError={onError}
         onCancel={onCancel}
