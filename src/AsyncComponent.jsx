@@ -38,7 +38,7 @@ class AsyncComponent extends Component {
 
     return (
       <Await
-        renderComplete={({ value: LoadedComponent }) => <LoadedComponent {...props} />}
+        renderComplete={({ value: LoadedComponent, error }) => <LoadedComponent {...props} />}
         renderPending={() => <Loader />}
         onStart={(resolve, reject) => promise.then(
           component => resolve(component[esModuleFlag] ? component.default : component), reject)}

@@ -39,26 +39,26 @@ class Await extends PureComponent {
   }
 
   onStart = (resolve, reject) => {
-    this.setState({ done: false });
     const { id, onStart } = this.props;
     if (onStart) {
       onStart(resolve, reject, id);
     }
+    this.setState({ done: false });
   };
   onSuccess = (value) => {
-    this.setState({ value, done: true });
     const { id, onSuccess } = this.props;
     if (onSuccess) {
       onSuccess(value, id);
     }
+    this.setState({ value, done: true });
   };
   onError = (error) => {
     if (!error || !error.isCanceled) {
-      this.setState({ error, done: true });
       const { id, onError } = this.props;
       if (onError) {
         onError(error, id);
       }
+      this.setState({ error, done: true });
     } else {
       const { id, onCancel } = this.props;
       if (onCancel) {

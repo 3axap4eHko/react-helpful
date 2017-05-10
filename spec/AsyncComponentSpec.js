@@ -19,4 +19,19 @@ describe('AsyncComponent test suite', () => {
     />);
   });
 
+  it('test resolved AsyncComponent', (done) => {
+    render(<AsyncComponent
+      component={() => require('./fixtures/TestComponent').default}
+      loader={TestComponent}
+      onSuccess={() => done()}
+    />);
+  });
+
+  it('test resolved AsyncComponent without loader', (done) => {
+    render(<AsyncComponent
+      component={() => import('./fixtures/TestComponent')}
+      onSuccess={() => done()}
+    />);
+  });
+
 });
