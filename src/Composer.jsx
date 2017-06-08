@@ -17,6 +17,14 @@ class Composer extends PureComponent {
     onError: func,
     onCancel: func,
   };
+
+  static defaultProps = {
+    onStart: () => null,
+    onSuccess: () => null,
+    onError: () => null,
+    onCancel: () => null,
+  };
+
   onStart = (resolve, reject, id) => {
     const { actions, onStart } = this.props;
     if (onStart) {

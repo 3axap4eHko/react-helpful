@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { func, any, object, string } from 'prop-types';
+import { func, any, shape, string } from 'prop-types';
 import Empty from './Empty';
 import { isComponent } from './utils';
 
@@ -10,7 +10,7 @@ class If extends PureComponent {
     render: func.isRequired,
     elseRender: func,
 
-    props: object,
+    props: shape({}),
     comment: string,
   };
   static defaultProps = {

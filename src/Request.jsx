@@ -32,11 +32,11 @@ class Request extends PureComponent {
     headers: {},
     data: null,
     withCredentials: true,
-    onStart() {},
-    onProgress() {},
-    onSuccess() {},
-    onError() {},
-    onCancel() {},
+    onStart: () =>  null,
+    onProgress: () =>  null,
+    onSuccess: () =>  null,
+    onError: () =>  null,
+    onCancel: () =>  null,
   };
 
   onStart = (onSuccess, onError, id) => {

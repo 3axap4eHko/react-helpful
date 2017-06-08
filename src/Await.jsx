@@ -29,6 +29,12 @@ class Await extends PureComponent {
     comment: string,
   };
 
+  static defaultProps = {
+    onSuccess: () => null,
+    onError: () => null,
+    onCancel: () => null,
+  };
+
   componentWillMount() {
     const { cancel } = getPromiseCancelable(this.onStart, this.onSuccess, this.onError);
     this[cancelSymbol] = cancel;

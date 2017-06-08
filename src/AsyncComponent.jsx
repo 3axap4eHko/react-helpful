@@ -18,9 +18,9 @@ class AsyncComponent extends Component {
 
   static defaultProps = {
     loader: Empty,
-    onSuccess: () => {},
-    onError: () => {},
-    onCancel: () => {},
+    onSuccess: () => null,
+    onError: () => null,
+    onCancel: () => null,
   };
 
   state = {
