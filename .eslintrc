@@ -10,10 +10,7 @@
     "react"
   ],
   "parserOptions": {
-    "ecmaVersion": 6,
-    "ecmaFeatures": {
-      "jsx": true
-    }
+    "ecmaVersion": 6
   },
   "rules": {
     "no-debugger": 1,

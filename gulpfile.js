@@ -5,14 +5,10 @@ const Del = require('del');
 const Gulp = require('gulp');
 const GExport = require('gulp-export');
 const Babel = require('gulp-babel');
-const ESLlint = require('gulp-eslint');
 
 Gulp.task('clean', cb => Del([buildDir], cb));
 
 Gulp.task('js-compile', ['clean'], () => Gulp.src([`${sourceDir}/**/*.js*`])
-        .pipe(ESLlint())
-        .pipe(ESLlint.format())
-        .pipe(ESLlint.failAfterError())
         .pipe(GExport({
           context: './src',
           filename: 'index.js',
