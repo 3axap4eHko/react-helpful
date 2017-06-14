@@ -1,53 +1,59 @@
 import React, { Component } from 'react';
 import { func, shape } from 'prop-types';
-import Await from './Await';
 import Empty from './Empty';
-
+import { isComponent } from './utils';
 const esModuleFlag = '__esModule';
 
-class AsyncComponent extends Component {
+export default class AsyncComponent extends Component {
 
   static propTypes = {
     component: func.isRequired,
-    loader: func,
     props: shape({}),
+    loader: func,
     onSuccess: func,
     onError: func,
-    onCancel: func,
   };
 
   static defaultProps = {
-    loader: Empty,
+    props: {},
     onSuccess: () => null,
-    onError: () => null,
-    onCancel: () => null,
+    onError: error => console.error(error),
   };
 
-  state = {
-    promise: null,
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      Component: null,
+    };
+
+    this.loadComponent(props);
+  }
+
+  loadComponent = ({ component, onSuccess, onError }) => {
+    Promise
+      .resolve(component())
+      .then(Component => (this.stopLoading && Component) || this.setState({ Component: Component[esModuleFlag] ? Component.default : Component }))
+      .then(onSuccess)
+      .catch(onError);
   };
 
-  componentWillMount() {
-    const { component } = this.props;
-    this.setState({ promise: Promise.resolve(component()) });
+  componentWillUnmount() {
+    this.stopLoading = true;
   }
 
   render() {
-    const { loader: Loader, onSuccess, onError, onCancel, props } = this.props;
-    const { promise } = this.state;
-
-    return (
-      <Await
-        renderComplete={({ value: LoadedComponent }) => <LoadedComponent {...props} />}
-        renderPending={() => <Loader />}
-        onStart={(resolve, reject) => promise.then(
-          component => resolve(component[esModuleFlag] ? component.default : component), reject)}
-        onSuccess={onSuccess}
-        onError={onError}
-        onCancel={onCancel}
-      />
-    );
+    const { props, loader:Loader } = this.props;
+    const { Component } = this.state;
+    if (Component && !this.stopLoading) {
+      return <Component {...props} />;
+    }
+    if (Loader) {
+      if (isComponent(Loader)) {
+        return <Loader />
+      }
+      return Loader();
+    }
+    return <Empty comment="componentLoader" />;
   }
 }
-
-export default AsyncComponent;
