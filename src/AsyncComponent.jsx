@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { func, shape } from 'prop-types';
 import Empty from './Empty';
 import { isComponent } from './utils';
+
 const esModuleFlag = '__esModule';
 
 export default class AsyncComponent extends Component {
@@ -16,6 +17,7 @@ export default class AsyncComponent extends Component {
 
   static defaultProps = {
     props: {},
+    loader: Empty,
     onSuccess: () => null,
     onError: error => console.error(error),
   };
