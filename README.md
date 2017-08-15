@@ -66,18 +66,25 @@ Conditional renderer `Switch` component
 
 ### <a name="EventListener"></a> EventListener
 
-DOM event listener
+Event listener
 
 ``` javascript
-<ElementEventListener
+<EventListener
     event="click"
-    target="#target"
+    selector="#target"
     excludeParents={['.close', '.exit']}
     on={ event => {} }
     noPrevent={false}
-    capture={false}
-    once={false}
+    capture={true}
+    once={true}
     passive={false}
+/>
+```
+
+``` javascript
+<EventListener
+    target={window}
+    event="load"
 />
 ```
 

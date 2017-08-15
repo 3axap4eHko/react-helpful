@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { func, string, array, any } from 'prop-types';
+import { func, string, array, any, object, oneOfType } from 'prop-types';
 import Empty from './Empty';
 
 if (typeof Element !== 'undefined' && !Element.prototype.matches) {
@@ -32,13 +32,19 @@ function isSelectorParent(element, selector) {
 class EventListener extends PureComponent {
   static propTypes = {
     event: string.isRequired,
-    target: string,
+    target: object,
+    selector: string,
     excludeParents: array,
     on: func.isRequired,
     noPrevent: any,
     capture: any,
     once: any,
     passive: any,
+  };
+
+  static defaultProps = {
+    target: document,
+    capture: true,
   };
 
   constructor(props) {
@@ -52,22 +58,22 @@ class EventListener extends PureComponent {
   }
 
   componentWillMount() {
-    const { event } = this.props;
-    document.addEventListener(event, this.listener, this.state);
+    const { event, target } = this.props;
+    target.addEventListener(event, this.listener, this.state);
   }
 
   componentWillUnmount() {
-    const { event } = this.props;
-    document.removeEventListener(event, this.listener, this.state);
+    const { event, target } = this.props;
+    target.removeEventListener(event, this.listener, this.state);
   }
 
   listener = (event) => {
-    const { target, on, noPrevent, excludeParents = [] } = this.props;
-    if (!target || event.target.matches(target)) {
+    const { selector, on, noPrevent, excludeParents = [] } = this.props;
+    if (!selector || event.target.matches(selector)) {
       if (!noPrevent) {
         event.preventDefault();
       }
-      const isExcluded = excludeParents.some(selector => isSelectorParent(event.target, selector));
+      const isExcluded = excludeParents.some(excludeSelector => isSelectorParent(event.target, excludeSelector));
       if (!isExcluded) {
         on(event);
       }

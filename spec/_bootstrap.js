@@ -20,10 +20,10 @@ global.render = (element, done = () => {}) => {
 };
 
 global.eventFire = (selector, event) => {
-  const element = document.querySelector(selector);
-  const eventObject = document.createEvent('Events');
-  eventObject.initEvent(event, true, false);
-  element.dispatchEvent(eventObject);
+  const eventObject = new Event(event);
+  const target = typeof selector === 'string' ? document.querySelector(selector) : selector;
+  debugger;
+  target.dispatchEvent(eventObject);
 };
 
 const components = new Map();
