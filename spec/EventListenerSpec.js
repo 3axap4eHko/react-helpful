@@ -13,6 +13,7 @@ describe('EventListener test suite', () => {
             selector="#target"
             event={EVENT_NAME}
             on={props.onClick}
+            capture={true}
             once
           />
         </div>
@@ -31,6 +32,7 @@ describe('EventListener test suite', () => {
           target={document}
           event={EVENT_NAME}
           on={props.onClick}
+          capture={true}
           once
         />
       );

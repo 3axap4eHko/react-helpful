@@ -20,13 +20,7 @@ if (typeof Element !== 'undefined' && !Element.prototype.matches) {
 }
 
 function isSelectorParent(element, selector) {
-  if (element.matches(selector)) {
-    if (element.parentNode) {
-      return isSelectorParent(element.parentNode, selector);
-    }
-    return false;
-  }
-  return true;
+  return element.matches(`${selector}, ${selector} *`);
 }
 
 class EventListener extends PureComponent {
@@ -44,7 +38,6 @@ class EventListener extends PureComponent {
 
   static defaultProps = {
     target: document,
-    capture: true,
   };
 
   constructor(props) {
