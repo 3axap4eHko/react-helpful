@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { func, string, array, any, object, oneOfType } from 'prop-types';
+import { func, string, array, any, shape, oneOfType } from 'prop-types';
 import Empty from './Empty';
 
 if (typeof Element !== 'undefined' && !Element.prototype.matches) {
@@ -26,7 +26,9 @@ function isSelectorParent(element, selector) {
 class EventListener extends PureComponent {
   static propTypes = {
     event: string.isRequired,
-    target: object.isRequired,
+    target: shape({
+      addEventListener: func.isRequired,
+    }).isRequired,
     selector: string,
     excludeParents: array,
     on: func.isRequired,
@@ -48,11 +50,7 @@ class EventListener extends PureComponent {
 
   componentWillMount() {
     const { event, target } = this.props;
-    if (target instanceof EventTarget) {
-      target.addEventListener(event, this.listener, this.state);
-    } else {
-      throw new Error('EventListener target is not instance of EventTarget');
-    }
+    target.addEventListener(event, this.listener, this.state);
   }
 
   componentWillUnmount() {
