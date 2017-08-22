@@ -50,8 +50,8 @@ describe('Environment for tests', () => {
   });
 
   it('Ensure the React version used', () => {
-    const ver = +React.version.replace(/(\d+)\.(\d+)*/, '$1');
-    expect(ver >= 15).toBeTruthy();
+    const [ver] = /^\d+\.\d+/.exec(React.version);
+    expect(+ver >= 15.5).toBeTruthy();
   });
 
   it('Test hook should works', (done) => {
