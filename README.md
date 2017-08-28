@@ -74,7 +74,7 @@ Event listener
     selector="#target"
     excludeParents={['.close', '.exit']}
     on={ event => {} }
-    noPrevent={false}
+    prevent={true}
     capture={true}
     once={true}
     passive={false}

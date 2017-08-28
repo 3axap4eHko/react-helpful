@@ -32,7 +32,7 @@ class EventListener extends PureComponent {
     selector: string,
     excludeParents: array,
     on: func.isRequired,
-    noPrevent: any,
+    prevent: any,
     capture: any,
     once: any,
     passive: any,
@@ -59,9 +59,9 @@ class EventListener extends PureComponent {
   }
 
   listener = (event) => {
-    const { selector, on, noPrevent, excludeParents = [] } = this.props;
+    const { selector, on, prevent, excludeParents = [] } = this.props;
     if (!selector || event.target.matches(selector)) {
-      if (!noPrevent) {
+      if (prevent) {
         event.preventDefault();
       }
       const isExcluded = excludeParents.some(excludeSelector => isSelectorParent(event.target, excludeSelector));
