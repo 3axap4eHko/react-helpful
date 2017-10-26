@@ -69,6 +69,7 @@ Conditional renderer `Switch` component
 Event listener
 
 ``` javascript
+// uses document as a listener by default
 <EventListener
     event="click"
     selector="#target"
@@ -83,7 +84,7 @@ Event listener
 
 ``` javascript
 <EventListener
-    target={window}
+    target={() => window}
     event="load"
 />
 ```

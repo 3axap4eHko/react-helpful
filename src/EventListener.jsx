@@ -26,9 +26,7 @@ function isSelectorParent(element, selector) {
 class EventListener extends PureComponent {
   static propTypes = {
     event: string.isRequired,
-    target: shape({
-      addEventListener: func.isRequired,
-    }).isRequired,
+    target: func.isRequired,
     selector: string,
     excludeParents: array,
     on: func.isRequired,
@@ -36,6 +34,10 @@ class EventListener extends PureComponent {
     capture: any,
     once: any,
     passive: any,
+  };
+
+  static defaultProps = {
+    target: () => document,
   };
 
   constructor(props) {
@@ -50,12 +52,12 @@ class EventListener extends PureComponent {
 
   componentWillMount() {
     const { event, target } = this.props;
-    target.addEventListener(event, this.listener, this.state);
+    target().addEventListener(event, this.listener, this.state);
   }
 
   componentWillUnmount() {
     const { event, target } = this.props;
-    target.removeEventListener(event, this.listener, this.state);
+    target().removeEventListener(event, this.listener, this.state);
   }
 
   listener = (event) => {
@@ -72,8 +74,8 @@ class EventListener extends PureComponent {
   };
 
   render() {
-    const { event, target } = this.props;
-    return <Empty comment={`On ${target} ${event} listener`} />;
+    const { event } = this.props;
+    return <Empty comment={`On ${event} listener`} />;
   }
 }
 

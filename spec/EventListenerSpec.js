@@ -9,7 +9,7 @@ describe('EventListener test suite', () => {
       return (
         <div id="target">
           <EventListener
-            target={document}
+            target={() => document}
             selector="#target"
             event={EVENT_NAME}
             on={props.onClick}
@@ -29,7 +29,7 @@ describe('EventListener test suite', () => {
     function Component(props) {
       return (
         <EventListener
-          target={document}
+          target={() => document}
           event={EVENT_NAME}
           on={props.onClick}
           capture={true}
@@ -47,7 +47,7 @@ describe('EventListener test suite', () => {
     function Component(props) {
       return (
         <EventListener
-          target={window}
+          target={() => window}
           event={EVENT_NAME}
           on={props.onClick}
           once
