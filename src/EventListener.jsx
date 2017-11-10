@@ -50,7 +50,7 @@ class EventListener extends PureComponent {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { event, target } = this.props;
     target().addEventListener(event, this.listener, this.state);
   }
