@@ -1,6 +1,5 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { func, string, array, any, shape, oneOfType } from 'prop-types';
-import Empty from './Empty';
 
 if (typeof Element !== 'undefined' && !Element.prototype.matches) {
   Element.prototype.matches =
@@ -23,7 +22,7 @@ function isSelectorParent(element, selector) {
   return element.matches(`${selector}, ${selector} *`);
 }
 
-class EventListener extends PureComponent {
+export default class EventListener extends Component {
   static propTypes = {
     event: string.isRequired,
     target: func.isRequired,
@@ -40,10 +39,8 @@ class EventListener extends PureComponent {
     target: () => document,
   };
 
-  constructor(props) {
-    super(props);
-    const { capture, once, passive } = props;
-    this.state = {
+  static getDerivedStateFromProps({ capture, once, passive }) {
+    return {
       capture: !!capture,
       once: !!once,
       passive: !!passive,
@@ -74,9 +71,6 @@ class EventListener extends PureComponent {
   };
 
   render() {
-    const { event } = this.props;
-    return <Empty comment={`On ${event} listener`} />;
+    return null;
   }
 }
-
-export default EventListener;

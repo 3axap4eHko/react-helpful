@@ -1,5 +1,4 @@
 .idea
-node_modules
-build
-src/index.js
-*.log
+node_modules/
+/*.log*
+/*.js

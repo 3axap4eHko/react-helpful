@@ -6,185 +6,189 @@
 
 ## Reference
 
- - [Empty](#Empty)
+ - [renderIf](#renderIf)
+ - [withAwait](#withAwait)
+ - [withImport](#withImport)
+ - [withMQ](#withMQ)
+
  - [If](#If)
+ - [IfElse](#IfElse)
+ - [For](#For)
  - [Switch](#Switch)
+
  - [EventListener](#EventListener)
- - [Await](#Await)
- - [AsyncComponent](#AsyncComponent)
- - [Sequencer](#Sequencer)
- - [Composer](#Composer)
- - [Request](#Request)
+ - [AsyncSequencer](#AsyncSequencer)
+ - [AsyncComposer](#AsyncComposer)
 
-### <a name="Empty"></a> Empty
-Render not drawable `script` tag component with multiline comments
-``` javascript
-<Empty comment="empty component comment"/>
+### <a name="renderIf"></a> renderIf
+Renders component if condition is truthy
 ```
-like here
-``` html
-<script>
-/**
- * empty component comment
- */
-</script>
+@renderIf(({ items }) => items && items.length)
+class Menu extends Component {
+  render() {
+    const { items } = this.props;
+    return items.map(item => <Item item={item} />)
+  }
+}
 ```
 
-## Conditional Rendering
+### <a name="withAwait"></a> withAwait
+Awaits async operation completion
+```
+@withAwait(({ asyncAction }) => asyncAction)
+class Menu extends Component {
+  render() {
+    const { data: { loading, result, error } } = this.props;
+    if (loading) {
+      return <Loading />;
+    }
+    if (error) {
+      return <Error error={error} />;
+    }
+    return (
+      <div>{result}</div>
+    );
+  }
+}
+```
 
-Problem is using ternary operator make code ugly and unreadable.
-Those components provide possibility render conditional parts in react style
+### <a name="withImport"></a> withImport
+Dynamic import support
+```
+@withImport(() => import('./Menu'))
+class MenuLoader extends Component {
+  render() {
+    const { DynamicComponent, items } = this.props;
+    if (DynamicComponent) {
+      return <DynamicComponent items={items} />;
+    }
+    return <Loading />;
+  }
+}
+```
+
+### <a name="withMQ"></a> withMQ
+Matches Media Query conditions
+```
+@withMQ({
+  isPortrait: '(orientation: portrait)',
+  isHidden: {
+    mediaQuery: '(max-width: 1024px)',
+    matches: true,
+  },
+})
+class SideMenu extends Component {
+  render() {
+    const { isPortrait, isHidden } = this.props;
+    return <Menu horizontal={!isPortrait} hidden={isHidden} />;
+  }
+}
+```
 
 ### <a name="If"></a> If
 Conditional renderer `If` component
 
 ``` javascript
-<If is={condition}
-    props={myProps}
-    render={ (passedMyProps) => <Component {...passedMyProps} /> }
-    elseRender={AnotherComponent}
-    comment="if condition"
+<If is={condition}>
+  {() => <Component />}
+</If>
+```
+
+### <a name="IfElse"></a> IfElse
+Conditional renderer `IfElse` component
+
+``` javascript
+<IfElse
+ is={condition}
+ then={() => <ComponentA />}
+ else={() => <ComponentA />}
+/>
+```
+
+### <a name="For"></a> For
+Loop renderer `For` component
+
+``` javascript
+<For
+  items={[1,2,3,4,5]}
+  each={(value, key) => <div key={key}>{value}</value>}
 />
 ```
 
 ### <a name="Switch"></a> Switch
 Conditional renderer `Switch` component
 ``` javascript
-<Switch value={value}
-    props={myProps}
-    cases={{
-        value1: MyComponent,
-        value2(props) {
-            return <MyAnotherComponent {...props} />
-        }
-    }}
-    def={DefaultComponent}
-    comment="switch case"
+<Switch
+  value={value}
+  cases={{
+    value1: () => <ComponentA />,
+    value2: () => <ComponentB />,
+    value3: () => <Component3 />,
+  }}
+  default={() => <ComponentD />}
 />
 ```
 
 
 ### <a name="EventListener"></a> EventListener
-
-Event listener
-
-``` javascript
-// uses document as a listener by default
-<EventListener
-    event="click"
-    selector="#target"
-    excludeParents={['.close', '.exit']}
-    on={ event => {} }
-    prevent={true}
-    capture={true}
-    once={true}
-    passive={false}
-/>
-```
+Expects `EventTarget` as target callback result for listening event
 
 ``` javascript
 <EventListener
-    target={() => window}
-    event="load"
+  target={() => document}
+  event="click"
+  selector="#target"
+  excludeParents={['.close', '.exit']}
+  on={ event => {} }
+  prevent={true}
+  capture={true}
+  once={true}
+  passive={false}
 />
 ```
 
-### <a name="Await"></a> Await
-Await promise completion, if component will be unmounted it trigger onCancel
+### <a name="AsyncComposer"></a> AsyncComposer
+Execute async actions at the same time and await their completion
 ``` javascript
-onStart(resolve, reject) {
-    setTimeout(resolve, 1000, 'some data');
-}
-// ...
-<Await
-    id="any_optional_identifier_of_async_operation"
+const id = 'operation_id';
+const actions = [friendsLoadAsync, messagesLoadAsync];
 
-    renderComplete={({error, value, id}) => <div>Complete</div>}
-    renderPending={() => <div>Pending</div>}
-
-    onStart={ (resolve, reject, id) => {} }
-    onSuccess={ (value, id) => {} }
-    onError={ (error, id) => {} }
-    onCancel={ (error, id) => {} }
-/>
+<AsyncComposer id={id} actions={actions}>
+{({ id, loading, result, error }) => {
+  if (loading) {
+    return <Loader />;
+  }
+  if (error) {
+    return <Error error={error} />;
+  }
+  return <Component result={result} />;
+}}
+</AsyncComposer>
 ```
 
-### <a name="AsyncComponent"></a> AsyncComponent
-AsyncComponent loader for webpack code splitting approach
+### <a name="AsyncSequencer"></a> AsyncSequencer
+Execute async actions one by one and await their completion
 ``` javascript
+const id = 'operation_id';
+const actions = [configLoadAsunc, configDependedDataLoadAsync];
 
-<AsyncComponent
-    component={() => import('./Component')}
-    loader={Loader}
-/>
-```
+<AsyncSequencer id={id} actions={actions}>
+{({ id, loading, result, error }) => {
+  if (loading) {
+    return <Loader />;
+  }
+  if (error) {
+    return <Error error={error} />;
+  }
+  return <Component result={result} />;
+}}
+</AsyncSequencer>
 
-### <a name="Composer"></a> Composer
-Parallel promised functions execution
-``` javascript
-<Composer
-    id="any_optional_identifier_of_async_operation"
-
-    actions={[friendsLoadAction, messagesLoadAction]}
-
-    renderComplete={({error, values}) => <div>Complete</div>}
-    renderPending={LoadingProgress}
-
-    onStart={ (resolve, reject, id) => {} }
-    onSuccess={ (value, id) => {} }
-    onError={ (error, id) => {} }
-    onCancel={ (error, id) => {} }
-/>
-```
-
-### <a name="Sequencer"></a> Sequencer
-Sequenced promised functions execution
-``` javascript
-<Sequencer
-    id="any_optional_identifier_of_async_operation"
-
-    actions={[configLoadAction, configDependedDataLoad]}
-
-    renderComplete={({error, values}) => <div>Complete</div>}
-    renderPending={LoadingProgress}
-
-    onStart={ (resolve, reject, id) => {} }
-    onSuccess={ (value, id) => {} }
-    onError={ (error, id) => {} }
-    onCancel={ (error, id) => {} }
-/>
-```
-
-
-### <a name="Request"></a> Request
-Request rendering component
-``` javascript
-<Request
-    id="any_optional_identifier_of_async_operation"
-
-    url={requestUrl}
-    query={queryObject}
-    method="POST"
-    headers={headers}
-    data={data}
-    // Basic Authentication
-    username={username}
-    password={password}
-
-    onStart={ (xhr, id) => {} }
-    onProgress={ (xhr, id) => {} }
-    onSuccess={ (xhr, id) => {} }
-    onError={ (error, xhr, id) => {} }
-    onCancel={ (xhr, id) => {} }
-
-    renderComplete={DisplayResultComponent}
-    renderPending={LoadingScreen}
-/>
 ```
 
 ## License
 [The MIT License](http://opensource.org/licenses/MIT)
-Copyright (c) 2016-2017 Ivan Zakharchenko
+Copyright (c) 2016-2018 Ivan Zakharchenko
 
 
 [downloads-image]: https://img.shields.io/npm/dm/react-helpful.svg
