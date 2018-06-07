@@ -4,20 +4,10 @@ import createHoc from './createHOC';
 
 export default createHoc(getAwait => class Await extends Component {
 
-  static getDerivedStateFromProps(nextProps) {
-    const awaiting = getAwait(nextProps)();
-
-    return {
-      awaiting,
-      loading: true,
-      result: null,
-      onDone: func,
-    };
-  }
-
   state = {
     loading: false,
     result: null,
+    error: null,
   };
 
   setResult = (error, result) => {
@@ -25,7 +15,11 @@ export default createHoc(getAwait => class Await extends Component {
   };
 
   componentDidMount() {
-    this.state.awaiting
+    this.setState({
+      loading: true,
+      result: null,
+    });
+    getAwait(this.props)()
       .then(result => this.setResult(null, result))
       .catch(error => this.setResult(error));
   }
