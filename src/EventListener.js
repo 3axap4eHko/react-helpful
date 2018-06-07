@@ -47,6 +47,8 @@ export default class EventListener extends Component {
     };
   }
 
+  state ={};
+
   componentDidMount() {
     const { event, target } = this.props;
     target().addEventListener(event, this.listener, this.state);
