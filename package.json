@@ -4,10 +4,10 @@
   "description": "Helpful React Components",
   "main": "index.js",
   "scripts": {
-    "build": "rm -rf *.js && babel src --out-dir . --ignore __tests__",
+    "build": "rm -rf build && babel src --out-dir build --ignore **/__tests__ && cp package.json README.md LICENSE.md build",
     "prepared": "NODE_ENV=production npm run build",
     "test": "NODE_ENV=test jest",
-    "patch-release": "npm version patch && git push && git push --tags && npm run build && cd build && npm publish"
+    "patch-release": "npm version 6.0.0 && git push && git push --tags && npm run build && cd build && npm publish"
   },
   "repository": {
     "type": "git",
@@ -21,30 +21,30 @@
   },
   "homepage": "https://github.com/3axap4eHko/react-helpful#readme",
   "peerDependencies": {
-    "react": "^16.3"
+    "react": "^16.6"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-jest": "^23.0.1",
-    "babel-plugin-syntax-dynamic-import": "^6.18.0",
-    "babel-plugin-transform-class-properties": "^6.19.0",
-    "babel-plugin-transform-decorators-legacy": "^1.3.4",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-plugin-transform-runtime": "^6.15.0",
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-react": "^6.16.0",
+    "@babel/cli": "^7.2.0",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.2.1",
+    "@babel/plugin-proposal-decorators": "^7.2.2",
+    "@babel/plugin-proposal-object-rest-spread": "^7.2.0",
+    "@babel/plugin-proposal-optional-chaining": "^7.2.0",
+    "@babel/plugin-transform-runtime": "^7.2.0",
+    "@babel/preset-env": "^7.2.0",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/runtime-corejs2": "^7.2.0",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "^23.6.0",
     "cross-env": "^5.0.5",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "jest": "^23.1.0",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
-    "react-redux": "^5.0.6",
     "react-router": "^4.1.2",
     "react-router-dom": "^4.1.2",
-    "react-test-renderer": "^16.3.2",
-    "redux": "^4.0.0"
+    "react-test-renderer": "^16.3.2"
   },
   "dependencies": {
     "prop-types": "^15.6.1"

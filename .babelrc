@@ -1,17 +1,19 @@
 {
   "presets": [
-    ["env", {
-      "targets": {
-        "browsers": ["last 2 version"]
-      }
+    ["@babel/env",{ "targets": {
+          "browsers": "last 2 versions"
+        },
+        "modules": "commonjs"
     }],
-    "react"
+    "@babel/react"
   ],
   "plugins": [
-    "syntax-dynamic-import",
-    "transform-decorators-legacy",
-    "transform-object-rest-spread",
-    "transform-class-properties",
-    "transform-runtime"
+    ["@babel/plugin-proposal-decorators", { "legacy":  true }],
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-object-rest-spread",
+    "@babel/plugin-proposal-optional-chaining",
+    ["@babel/plugin-transform-runtime", {
+      "corejs": 2, "helpers": false
+    }]
   ]
 }

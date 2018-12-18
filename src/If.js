@@ -10,7 +10,7 @@ export default class If extends Component {
   render() {
     const { is, children } = this.props;
     if (is) {
-      children();
+      return children();
     }
     return null;
   }

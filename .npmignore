@@ -1,3 +1,4 @@
-.idea
-src/
-*.log
+/.idea
+/src/
+/*.log
+/jest.*.js

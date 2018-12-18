@@ -25,7 +25,7 @@ export default createHoc(dynamicImport => class Import extends Component {
     this.setState({ DynamicComponent, error, loading: false });
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     this.state.awaiting
       .then(result => this.setResult(result))
       .catch(error => this.setResult(null, error));

@@ -6,6 +6,7 @@
 
 ## Reference
 
+ - [asyncComponent](#asyncComponent)
  - [renderIf](#renderIf)
  - [withAwait](#withAwait)
  - [withImport](#withImport)
@@ -19,6 +20,25 @@
  - [EventListener](#EventListener)
  - [AsyncSequencer](#AsyncSequencer)
  - [AsyncComposer](#AsyncComposer)
+
+
+### <a name="asyncComponent"></a> asyncComponent
+Dynamic import component support
+```
+const AuthPage = asyncComponent(() => import('./pages/auth'));
+const DashboardPage = asyncComponent(() => import('./pages/dashboard'));
+
+class App extends Component {
+  render() {
+    return (
+      <Switch>
+        <Route path="/auth" component={AuthPage} />
+        <Route path="/" component={DashboardPage} />
+      </Switch>
+    );
+  }
+}
+```
 
 ### <a name="renderIf"></a> renderIf
 Renders component if condition is truthy
